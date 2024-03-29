@@ -761,7 +761,7 @@ def return_included_papers(n, corpus, model, topic_weights, ris_file=None, nbook
 
         # output to ris format again
         out = merged_df.to_dict('records')
-        filepath = '/content/export.ris'
+        filepath = 'export.ris'
         with open(filepath, 'w') as out_file:
             rispy.dump(out, out_file)
             
