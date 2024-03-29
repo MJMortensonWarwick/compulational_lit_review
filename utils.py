@@ -13,6 +13,7 @@ from reportlab.platypus import Paragraph
 import matplotlib.pyplot as plt
 import textwrap
 
+
 def file_loader(ris_file, nbook="colab"):
     '''
     FUNCTION to load a file from ris format and prepare for a clr analysis
@@ -707,8 +708,6 @@ def return_included_papers(n, corpus, model, topic_weights, ris_file=None, nbook
     ranked_df = inclusion_criteria(corpus, model, topic_weights)
     ranked_df = ranked_df.head(n)
     ranked_df.to_csv("ranked_df.csv", index=False)
-    # auto download
-    files.download("/content/ranked_df.csv")
 
     # create ris file
     if ris_file != None:
@@ -744,7 +743,5 @@ def return_included_papers(n, corpus, model, topic_weights, ris_file=None, nbook
         filepath = '/content/export.ris'
         with open(filepath, 'w') as out_file:
             rispy.dump(out, out_file)
-        # auto download
-        files.download(filepath)
             
     return ranked_df
