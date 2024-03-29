@@ -80,10 +80,10 @@ def corpus_eda(file, viz="all", save=True, nbook="colab"):
     # if not colab but save then create on a local machine 
     elif save:
         import os
-        if os.path.isdir('/content/eda'):
+        if os.path.isdir('/eda'):
             from datetime import datetime
-            new_name = '/content/eda' + str(datetime.utcnow())
-            os.rename('/content/eda', new_name)
+            new_name = '/eda' + str(datetime.utcnow())
+            os.rename('/eda', new_name)
         os.mkdir("/eda")
         os.chdir("/eda")
 
@@ -509,10 +509,10 @@ def topic_outputs(corpus, model, topics, viz="all", save=True, nbook="colab"):
         os.chdir("/content/output")
     elif save:
         import os
-        if os.path.isdir('/content/output'):
+        if os.path.isdir('/output'):
             from datetime import datetime
-            new_name = '/content/output' + str(datetime.utcnow())
-            os.rename('/content/output', new_name)
+            new_name = '/output' + str(datetime.utcnow())
+            os.rename('/output', new_name)
         os.mkdir("/output")
         os.chdir("/output")
 
@@ -697,12 +697,33 @@ def inclusion_criteria(corpus, model, weights, include_scores=False):
     return output
 
 
-def return_included_papers(n, corpus, model, topic_weights, ris_file=None, nbook='colab'):
+def return_included_papers(n, corpus, model, topic_weights, ris_file=None, nbook='colab', save=True):
     '''
     FUNCTION to return a certain number of papers according to user input
     INPUT: a corpus, model, set of weights and number of papers to shortlist
     OUTPUT: a shortlisted corpus in dataframe and ris format
     '''
+
+    # if colab then create folders based on the colab directory structure
+    if nbook == "colab" and save:
+        import os
+        # if folder already exists rename by adding a timestamp
+        if os.path.isdir('/content/sources'):
+            from datetime import datetime
+            new_name = '/content/sources' + str(datetime.utcnow())
+            os.rename('/content/sources', new_name)
+        os.mkdir("/content/sources")
+        os.chdir("/content/sources")
+    # if not colab but save then create on a local machine 
+    elif save:
+        import os
+        if os.path.isdir('/sources'):
+            from datetime import datetime
+            new_name = '/sources' + str(datetime.utcnow())
+            os.rename('/sources', new_name)
+        os.mkdir("/sources")
+        os.chdir("/sources")
+
     
     # create dataframe
     ranked_df = inclusion_criteria(corpus, model, topic_weights)
