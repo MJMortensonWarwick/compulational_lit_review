@@ -745,11 +745,11 @@ def return_included_papers(n, corpus, model, topic_weights, ris_file=None, nbook
 
         # merge ris dataframe with score columns from ranked_df
         merged_df = temp_df.merge(
-            ranked_df[['DOI', 'score', 'cite_score', 'recency_score', 'topic_score']], 
+            ranked_df[['Title', 'Source', 'score', 'cite_score', 'recency_score', 'topic_score']], 
             how='right', left_on=['title', 'secondary_title'], right_on=['Title', 'Source'])
         
         merged_df = merged_df.sort_values(by=['score'], ascending=False) # sort by score
-        merged_df = merged_df.drop(['DOI'], axis=1) # drop extra DOI column
+        merged_df = merged_df.drop(['Title', 'Source'], axis=1) # drop extra DOI column
 
         # change column names to match ris format
         merged_df = merged_df.rename(columns={
