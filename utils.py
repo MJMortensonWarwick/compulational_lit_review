@@ -44,8 +44,9 @@ def file_loader(ris_file, nbook="colab"):
       'type_of_reference': 'Type'
     })
 
+    # TODO - work out a decent deduplication strategy
     # drop duplicates based on DOI
-    corpus = corpus.drop_duplicates(subset='DOI')
+    # corpus = corpus.drop_duplicates(subset='DOI')
 
     # seperate out citations from the text
     corpus['Citations'] = corpus['Citations'].str[0].str.split(';')
@@ -745,7 +746,7 @@ def return_included_papers(n, corpus, model, topic_weights, ris_file=None, nbook
         # merge ris dataframe with score columns from ranked_df
         merged_df = temp_df.merge(
             ranked_df[['DOI', 'score', 'cite_score', 'recency_score', 'topic_score']], 
-            how='right', left_on='doi', right_on='DOI')
+            how='right', left_on=['title', 'secondary_title'], right_on=['Title', 'Source'])
         
         merged_df = merged_df.sort_values(by=['score'], ascending=False) # sort by score
         merged_df = merged_df.drop(['DOI'], axis=1) # drop extra DOI column
