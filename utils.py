@@ -782,12 +782,16 @@ def prompt_template(k, model):
     
     labels = [*model.topic_labels_.values()]
     keywords = labels[k]
+    keywords = keywords.split("_")
+    output_keywords = ' '.join(keywords[1:])
     documents = []
-    for doc in model.representative_docs_[i]:
+    for doc in model.representative_docs_[k]:
         # if more than 800 characters truncate
         if len(doc) > 800:
             doc = doc[:800]
+        doc += '\n'
         documents.append(doc)
-    prompt = "I have topic that contains the following documents:\n" + documents + "\n The topic is described by the following keywords: " + keywords + "\n Based on the above, can you give a short label of the topic?"
+    output_docs = ' '.join(documents)
+    prompt = "I have topic that contains the following documents:\n" + output_docs + "\n The topic is described by the following keywords: " + output_keywords + "\n Based on the above, can you give a short label of the topic?"
 
     return prompt
