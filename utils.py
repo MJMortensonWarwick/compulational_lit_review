@@ -774,6 +774,12 @@ def return_included_papers(corpus, model, topic_weights, n='all', ris_file=None,
     return ranked_df
 
 def prompt_template(k, model):
+    '''
+    FUNCTION to return a prompt to obtain a topic description from an LLM
+    INPUT: a topic to creat a prompt for (int) and a model
+    OUTPUT: a prompt template that can be copied into an LLM
+    '''
+    
     labels = [*model.topic_labels_.values()]
     keywords = labels[k]
     documents = []
@@ -782,8 +788,8 @@ def prompt_template(k, model):
         if len(doc) > 800:
             doc = doc[:800]
         documents.append(doc)
-    prompt = "I have topic that contains the following documents:\n" + documents + 
-        "\n The topic is described by the following keywords: " + keywords + 
+    prompt = "I have topic that contains the following documents:\n" + documents \ 
+        + "\n The topic is described by the following keywords: " + keywords + \
         "\n Based on the above, can you give a short label of the topic?"
 
     return prompt
