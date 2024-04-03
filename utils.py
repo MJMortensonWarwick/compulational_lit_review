@@ -595,7 +595,7 @@ def form_display(model):
         print('\n')
         # citations
         print('  Number of citations')
-        sliders_dict['cites'] = widgets.IntSlider(value=0,
+        sliders_dict['cites'] = widgets.IntSlider(value=5,
             min=0,
             max=10,
             step=1)
