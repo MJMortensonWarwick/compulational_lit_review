@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import textwrap
 
 
-def file_loader(ris_file, nbook="colab"):
+def file_loader(ris_file, nbook="colab", source="scopus"):
     '''
     FUNCTION to load a file from ris format and prepare for a clr analysis
     INPUT: a RIS format export from an academic database (tested on Scopus and WoS)
@@ -49,9 +49,12 @@ def file_loader(ris_file, nbook="colab"):
     # corpus = corpus.drop_duplicates(subset='DOI')
 
     # seperate out citations from the text
-    corpus['Citations'] = corpus['Citations'].astype(str)
-    corpus['Citations'] = corpus['Citations'].str[0].str.split(';')
-    corpus['Citations'] = corpus['Citations'].str[1].str.replace("Cited By: ", "").astype(int)
+    if source == "scopus":
+        corpus['Citations'] = corpus['Citations'].str[0].str.split(';')
+        corpus['Citations'] = corpus['Citations'].str[1].str.replace("Cited By: ", "").astype(int)
+    elif source == "wos":
+        corpus['Citations'] = corpus['Citations'].str[1].str.split(': ')
+        corpus['Citations'] = corpus['Citations'].str[1].astype(int)
 
     # convert numeric columns to a numeric data type
     num_cols = ['Year', 'Citations']
@@ -699,7 +702,7 @@ def inclusion_criteria(corpus, model, weights, include_scores=False):
     return output
 
 
-def return_included_papers(n, corpus, model, topic_weights, ris_file=None, nbook='colab', save=True):
+def return_included_papers(n='all', corpus, model, topic_weights, ris_file=None, nbook='colab', save=True):
     '''
     FUNCTION to return a certain number of papers according to user input
     INPUT: a corpus, model, set of weights and number of papers to shortlist
@@ -729,7 +732,8 @@ def return_included_papers(n, corpus, model, topic_weights, ris_file=None, nbook
     
     # create dataframe
     ranked_df = inclusion_criteria(corpus, model, topic_weights)
-    ranked_df = ranked_df.head(n)
+    if n != 'all':
+        ranked_df = ranked_df.head(n)
     ranked_df.to_csv("ranked_df.csv", index=False)
 
     # create ris file
@@ -768,3 +772,16 @@ def return_included_papers(n, corpus, model, topic_weights, ris_file=None, nbook
             rispy.dump(out, out_file)
             
     return ranked_df
+
+def prompt_template(k, model):
+    labels = [*model.topic_labels_.values()]
+    keywords = labels[k]
+    documents = []
+    for doc in model.representative_docs_[i]:
+        # if more than 800 characters truncate
+        if len(doc) > 800:
+            doc = doc[:800]
+        documents.append(doc)
+    print("I have topic that contains the following documents:\n {documents} 
+        \n The topic is described by the following keywords: " + keywords + 
+        "\n Based on the above, can you give a short label of the topic?")
