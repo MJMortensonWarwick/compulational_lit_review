@@ -782,6 +782,8 @@ def prompt_template(k, model):
         if len(doc) > 800:
             doc = doc[:800]
         documents.append(doc)
-    print("I have topic that contains the following documents:\n {documents} 
-        \n The topic is described by the following keywords: " + keywords + 
-        "\n Based on the above, can you give a short label of the topic?")
+    prompt = "I have topic that contains the following documents:\n" + documents + 
+        "\n The topic is described by the following keywords: " + keywords + 
+        "\n Based on the above, can you give a short label of the topic?"
+
+    return prompt
