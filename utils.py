@@ -781,7 +781,7 @@ def prompt_template(k, model):
     '''
     
     labels = [*model.topic_labels_.values()]
-    keywords = labels[k]
+    keywords = labels[k+1]
     keywords = keywords.split("_")
     output_keywords = ' '.join(keywords[1:])
     documents = []
