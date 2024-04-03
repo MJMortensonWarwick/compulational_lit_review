@@ -49,6 +49,7 @@ def file_loader(ris_file, nbook="colab"):
     # corpus = corpus.drop_duplicates(subset='DOI')
 
     # seperate out citations from the text
+    corpus['Citations'] = corpus['Citations'].astype(str)
     corpus['Citations'] = corpus['Citations'].str[0].str.split(';')
     corpus['Citations'] = corpus['Citations'].str[1].str.replace("Cited By: ", "").astype(int)
 
