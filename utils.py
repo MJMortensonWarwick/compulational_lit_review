@@ -702,7 +702,7 @@ def inclusion_criteria(corpus, model, weights, include_scores=False):
     return output
 
 
-def return_included_papers(n='all', corpus, model, topic_weights, ris_file=None, nbook='colab', save=True):
+def return_included_papers(corpus, model, topic_weights, n='all', ris_file=None, nbook='colab', save=True):
     '''
     FUNCTION to return a certain number of papers according to user input
     INPUT: a corpus, model, set of weights and number of papers to shortlist
