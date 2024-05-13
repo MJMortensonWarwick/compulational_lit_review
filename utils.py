@@ -263,8 +263,9 @@ def hyperP_scaler(corpus):
     INPUT: a dataset of text (a corpus)
     OUTPUT: min_topic_size and n_neighbors (for UMAP) hyperparameter choices
     '''
-    topic_size = int(len(corpus) / 2000 * 10) + 2
-    umap_size = int(len(corpus) / 2000 * 15) + 2
+    topic_size = max(int(len(corpus) / 2000 * 10), 5)
+    umap_size = max(int(len(corpus) / 2000 * 15), 8)
+    
     return topic_size, umap_size
 
 
