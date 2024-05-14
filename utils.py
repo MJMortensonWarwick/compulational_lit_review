@@ -264,7 +264,7 @@ def hyperP_scaler(corpus):
     OUTPUT: min_topic_size and n_neighbors (for UMAP) hyperparameter choices
     '''
     topic_size = max(int(len(corpus) / 2000 * 10) + 2, 5)
-    umap_size = max(int(len(corpus) / 2000 * 15) + 2, 8)
+    umap_size = max(int(len(corpus) / 2000 * 15) + 2, 15)
     
     return topic_size, umap_size
 
